@@ -1,0 +1,97 @@
+<?php
+/**
+ * @package     Joomla.Administrator
+ * @subpackage  com_kungfusql
+ *
+ * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+// No direct access to this file
+defined('_JEXEC') or die('Restricted access');
+
+/**
+ * KungFuSql Model
+ *
+ * @since  0.0.1
+ */
+class KungFuSqlModelKungFuSql extends JModelItem
+{
+	/**
+	 * @var array messages
+	 */
+	protected $messages;
+
+	/**
+	 * Method to get a table object, load it if necessary.
+	 *
+	 * @param   string  $type    The table name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
+	 * @return  JTable  A JTable object
+	 *
+	 * @since   1.6
+	 */
+	public function getTable($type = 'KungFuSql', $prefix = 'KungFuSqlTable', $config = array())
+	{
+		return JTable::getInstance($type, $prefix, $config);
+	}
+
+	/**
+	 * Get the message
+	 *
+	 * @param   integer  $id  Filename Id
+	 *
+	 * @return  string        Fetched String from Table for relevant Id
+	 */
+	public function getMsg($id = 1)
+	{
+		if (!is_array($this->messages))
+		{
+			$this->messages = array();
+		}
+
+		if (!isset($this->messages[$id]))
+		{
+			// Request the selected id
+			$app            = JFactory::getApplication();
+			$jinput         = $app->input;
+			$id             = $jinput->get('id',                 1, 'INT');
+			$param1         = $jinput->get('param1',          null, 'STRING');
+			$param2         = $jinput->get('param2',          null, 'STRING');
+			$param3         = $jinput->get('param3',          null, 'STRING');
+			$param4         = $jinput->get('param4',          null, 'STRING');
+			$param5         = $jinput->get('param5',          null, 'STRING');
+			$queryAgainTime = $jinput->get('queryAgainTime',    60, 'STRING');
+			$debug          = $jinput->get('debug',              0, 'STRING');
+
+			// Get a TableKungFuSql instance
+			$table = $this->getTable();
+
+			// Load the message
+			$table->load($id);
+
+			$filename = $table->filename;
+
+			// Assign the message
+                        //    assigning array is the same as pushing, and also faster
+			$this->messages[$id][] = $id;
+			$this->messages[$id][] = $filename;
+			$this->messages[$id][] = $param1;
+			$this->messages[$id][] = $param2;
+			$this->messages[$id][] = $param3;
+			$this->messages[$id][] = $param4;
+			$this->messages[$id][] = $param5;
+			$this->messages[$id][] = $queryAgainTime;
+			$this->messages[$id][] = $debug;
+
+                        // var_dump( $this->messages[$id] );
+                        //    printout:
+                        //    array(4) { [0]=> string(12) "example3.sql" [1]=> string(1) "1" 
+                        //               [2]=> string(1) "2" [3]=> NULL } 
+		}
+
+		return $this->messages[$id];
+	}
+}

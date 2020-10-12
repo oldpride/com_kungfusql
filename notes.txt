@@ -1,0 +1,101 @@
+used this guide to have created this component
+https://docs.joomla.org/Special:MyLanguage/J3.2:Developing_an_MVC_Component/Developing_a_Basic_Component
+
+zip -r $WINHOME/Downloads/com_kungfusql001.zip com_kungfusql
+
+keep component name in lower case; otherwise, joomla may not be able to find it even after
+successful installation.
+
+v0.0.1,
+   the following works
+      https://mysite.org/LCA2/administrator/index.php?option=com_kungfusql
+      Components->Kung Fu SQL 
+      Extenstions->Manage->Manage, search Kung Fu SQL
+
+v0.0.2, added view
+   the following works
+      https://mysite.org/LCA2/index.php?option=com_kungfusql
+   Caveat: 
+      If your view needs to load or otherwise embed individual JavaScript code, do not do that
+      in the view, as the code might not get included when caching is enabled. Load those scripts
+      in the controller instead
+
+v0.0.3, added Menu
+   the following works
+      Menues->Manage->Main Menu->New->select Menu Type, we should "Kung Fu SQL".
+      i am able to use it to add a new menu. 
+      tested access control, works
+
+v0.0.4, add models, 
+   this is for internal change, no exteral effect yet
+
+v0.0.5, add request variable in menu, 
+   joomla available field types: https://docs.joomla.org/Standard_form_field_types
+   sql is multiline input, therefore, we used type=editor and filter=raw
+
+   checked #_menu table, params link
+      index.php?option=com_kungfusql&view=kungfusql&sql=...
+
+   the sql data is able to pass down but becomes one line: the comment is mixed in. bad
+
+v0.0.6 add database
+   #__kungfusql table created
+   note to use backticks to enclose the `#__tableName` and column names, eg
+      DROP TABLE IF EXISTS `#__kungfusql`;
+
+      INSERT INTO `#__kungfusql` (`filename`) VALUES
+      ('example1,sql'),
+      ('example2,sql')
+   #__schema updated with 0.0.6 for extension id 879
+
+   q: why do you name it HelloWorlds with a plural? why not to stay with HelloWorld, a singular?
+   a: Generally Joomla uses the plural when it's referring to the admin form which presents a number of records (eg articles, contacts) and the singular when it's referring to just one record, as in editing a single article or contact. So the controllers and views follow that convention, and this makes the code more modular, although the "singular" model handles the updates for both individual records and batches of records, in order to avoid code duplication. Third party extensions which I've seen also follow the Joomla pattern, so it's best to adopt it.
+
+v0.0.7 add backend
+   components->Kung Fu Sql set up. publish button is not working yet, needs more coding
+
+v0.0.8 add language translation
+   i didn't do this
+
+v0.0.9 add backend actions
+   added New/Edit/Delete actions
+
+from this step, tried to go by my own
+
+v0.1.0 i tried to add an file upload feature, never worked. therefore i gave up the upload feature.
+
+v0.1.1
+   stay with manul upload for now
+   uploaded sqls to admininstrator/uploads/com_kungfusql
+   added logic to check filename exists under admininstrator/uploads/com_kungfusql
+   added delete-file-from-file-system logic
+   added debug-mode to menu
+
+v0.1.2 
+   tried to add ajax to throttle the user query frequency, not successful.
+   used $_SESSION variable to throttle user query frequency, working.
+    
+
+-------------------------------------------------------------
+
+full cycle
+
+use cpanel file manager
+   upload the sql to administrator/uploads/com_kungfusql
+   note administrator/uploads/com_kungfusql is outside module installation, therefore, will not
+   be removed during uninstall.
+
+Components->Kung Fu Sql, 
+   add an entry to this sql file name
+
+Menu->Main Menu, 
+   add a new menu, 
+   menu type: Kung Fu SQL
+   select SQL file name
+   set Params, up to 3
+   change Debug mode if needed
+   Parenet Menu
+   Access
+
+
+

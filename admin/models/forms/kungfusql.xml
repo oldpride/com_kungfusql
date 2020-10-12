@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field
+				name="id"
+				type="hidden"
+				/>
+                <!-- https://docs.joomla.org/File_form_field_type -->
+		<field
+				name="filename"
+				type="text"
+				label="SQL file name"
+				description="select a SQL file under administrator/components/com_kungfusql/uploads"
+				size="40"
+				class="inputbox"
+				default=""
+				/>
+	</fieldset>
+</form>

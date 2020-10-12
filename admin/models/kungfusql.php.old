@@ -1,0 +1,155 @@
+<?php
+/**
+ * @package     Joomla.Administrator
+ * @subpackage  com_kungfusql
+ *
+ * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+// No direct access to this file
+defined('_JEXEC') or die('Restricted access');
+
+// https://stackoverflow.com/questions/30704394/joomla-backend-component-file-upload-for-custom-component
+jimport('joomla.filesystem.file');
+
+/**
+ * KungFuSql Model
+ *
+ * @since  0.0.1
+ */
+class KungFuSqlModelKungFuSql extends JModelAdmin
+{
+	/**
+	 * Method to get a table object, load it if necessary.
+	 *
+	 * @param   string  $type    The table name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
+	 * @return  JTable  A JTable object
+	 *
+	 * @since   1.6
+	 */
+	public function getTable($type = 'KungFuSql', $prefix = 'KungFuSqlTable', $config = array())
+	{
+		return JTable::getInstance($type, $prefix, $config);
+	}
+
+	/**
+	 * Method to get the record form.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed    A JForm object on success, false on failure
+	 *
+	 * @since   1.6
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		// Get the form.
+		$form = $this->loadForm(
+			'com_kungfusql.kungfusql',
+			'kungfusql',
+			array(
+				'control' => 'jform',
+				'load_data' => $loadData
+			)
+		);
+
+		if (empty($form))
+		{
+			return false;
+		}
+
+		return $form;
+	}
+
+	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return  mixed  The data for the form.
+	 *
+	 * @since   1.6
+	 */
+	protected function loadFormData()
+	{
+		// Check the session for previously entered form data.
+		$data = JFactory::getApplication()->getUserState(
+			'com_kungfusql.edit.kungfusql.data',
+			array()
+		);
+
+		if (empty($data))
+		{
+			$data = $this->getItem();
+		}
+
+		return $data;
+	}
+
+        // https://stackoverflow.com/questions/21704490/what-are-the-differences-between-joomla-model-types
+        // https://docs.joomla.org/API17:JModelAdmin
+        // https://forum.joomla.org/viewtopic.php?t=978528
+        function save($data)
+        {
+                // https://stackoverflow.com/questions/139474/how-can-i-capture-the-result-of-var-dump-to-a-string
+                JFactory::getApplication()->enqueueMessage("data = " . var_export($data));
+
+                // https://docs.joomla.org/Special:MyLanguage/How_to_use_the_filesystem_package
+
+                die("exit");
+                $jinput = JFactory::getApplication()->input;
+                $files = $jinput->files->get('jform');
+
+                $fileinfo =pathinfo($files['file_name']['name']);
+
+                $ext = $fileinfo['extension'];
+                //$filename = time().".$ext";
+                $filename = time().".$ext";
+
+                $tmp_file = $files['file_name']['tmp_name'];
+                // https://stackoverflow.com/questions/18503023/joomla-3-0-ds-does-not-workuse-of-undefined-constant-ds
+                // DS is removed from joomla, use / instead
+                $dest = "media/".JText::_('COM_KUNGFUSQL')."/upload/".$filename;
+
+                if (JFile::upload($tmp_file, $dest)) {
+                        $msg = "JFile::upload($tmp_file, $dest) successful upload";
+                } else {
+                        $msg = "JFile::upload($tmp_file, $dest) failed upload";
+                }
+
+                JFactory::getApplication()->enqueueMessage(var_export($data));
+
+                // in joomla, code may not always display echo statement. in that case, use
+                JFactory::getApplication()->enqueueMessage($msg);
+
+
+                if (parent::save($data)) {
+                        $msg = JText::_( 'Tian: Edit Successful!' );
+		} else {
+			$msg = JText::_( 'Tian: There was an error' );
+                }
+
+                // we need the redirect
+                $app = JFactory::getApplication();
+		//$app->redirect(JRoute::_('index.php?option=com_kungfusql'), $msg);
+        }
+
+        function delete($data)
+        {
+                if (parent::delete($data)) {
+                        $msg = JText::_( 'Tian: need to delete the file!' );
+		} else {
+			$msg = JText::_( 'Tian: There was an error in delete' );
+                }
+
+                // we need the redirect
+                $app = JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=com_kungfusql'), $msg);
+        }
+
+        // don't override add()/edit() here. do it in controllers
+
+}

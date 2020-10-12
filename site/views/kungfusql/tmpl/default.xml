@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_KUNGFUSQL_KUNGFUSQL_VIEW_DEFAULT_TITLE">
+		<message>COM_KUNGFUSQL_KUNGFUSQL_VIEW_DEFAULT_DESC</message>
+	</layout>
+
+        <fields name="request" addfieldpath="/administrator/components/com_kungfusql/models/fields">
+		<fieldset name="request">
+                        <!-- https://docs.joomla.org/Standard_form_field_types -->
+                        <!-- https://docs.joomla.org/Special:MyLanguage/Text_form_field_type -->
+                        <!-- https://docs.joomla.org/Editor_form_field_type -->
+                        <!-- https://docs.joomla.org/Textarea_form_field_type -->
+			<field
+				name="id"
+				type="kungfusql"
+				label="SQL file name"
+				description="SQL file name"
+                                >
+                        </field>
+			<field
+				name="param1"
+				type="text"
+				label="Param1 (optional)"
+				description="First Paramemter to SQL"
+                                >
+                        </field>
+			<field
+				name="param2"
+				type="text"
+				label="Param2 (optional)"
+				description="Second Paramemter to SQL"
+                                >
+                        </field>
+			<field
+				name="param3"
+				type="text"
+				label="Param3 (optional)"
+				description="Third Paramemter to SQL"
+                                >
+                        </field>
+			<field
+				name="param4"
+				type="text"
+				label="Param4 (optional)"
+				description="Third Paramemter to SQL"
+                                >
+                        </field>
+			<field
+				name="param5"
+				type="text"
+				label="Param5 (optional)"
+				description="Third Paramemter to SQL"
+                                >
+                        </field>
+                        <!--
+                        use type="number" not type="integer". 
+                        type="integer" is a select box,    not taking user-typed input
+                        type="number" is like type="text",     taking user-typed input
+                        -->
+			<field
+				name="queryAgainTime"
+				type="number"
+                                first="0"
+                                step="10"
+                                default="60"
+				label="Query Again Time (Sec)"
+				description="User can query again after this time. Use this to reduce user query frequency."
+                                >
+                        </field>
+                        <field 
+                                name="debug"
+                                type="radio"
+                                default="0"
+                                label="Debug Mode"
+                                description="Debug message will print to front-end page"
+                                class="btn-group btn-group-yesno">
+                                <option value="1">YES</option>
+                                <option value="0">NO</option>
+                        </field>
+		</fieldset>
+	</fields>
+</metadata>

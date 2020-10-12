@@ -1,0 +1,14 @@
+*~
+*.swp
+*.swo
+*.pyc
+.idea
+autopath
+tpstamp.txt*
+
+# perl performance profile
+nytprof.out
+nytprof
+
+
+__pycache__

@@ -1,0 +1,28 @@
+<h1>Default View Layout</h1>
+<form action="<?php print JRoute::_('index.php?option=com_kungfusql&view=kungfusql&task=upload')?>"
+method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+<div class="form-horizontal">
+    <fieldset>
+        <legend>Legend</legend>
+        <div class="span6">
+            <?php foreach ($this->form->getFieldset() as $field)?>
+            <div class="control-group">
+                <div class="control-label">
+                    <?php print $field->label; ?>
+                </div>
+                <div class="controls">
+                    <?php print $field->input; ?>
+                    <button id="upload-submit" class="btn btn-primary">
+                        <i class="icon-upload icon-white"></i>
+                        Start Upload
+                    </button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <div>
+    <input type="hidden" name="task" value="kungfusql.upload" />
+        <?php echo JHtml::_('form.token'); ?>
+    </div>
+</div>
+</form>
